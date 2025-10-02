@@ -1,46 +1,60 @@
-# Demo Hệ thống Thư viện Đơn Giản - Week 03
+# 22021101_INT3505E_02_demo
 
-## Mô tả
+## 📚 Demo Hệ thống Thư viện Đơn Giản - Week 03
 
-Đây là demo hệ thống quản lý thư viện đơn giản được xây dựng bằng Flask API theo yêu cầu SRS của buổi 3. Hệ thống cung cấp các chức năng cơ bản để quản lý sách và việc mượn trả sách.
+Đây là repository demo cá nhân cho môn học **INT3505E** - Lớp 02, chứa bài tập **Week 03** về thiết kế API hệ thống thư viện đơn giản sử dụng Flask.
 
-## Cấu trúc Project
+## 🗂️ Cấu trúc Repository
 
 ```
-week_03/
-├── app.py                               # Main Flask application
-├── database.py                          # Database configuration & connection
-├── routes/                              # API routes modules
-│   ├── __init__.py                      # Routes package init
-│   ├── books.py                         # Books management endpoints  
-│   └── borrows.py                       # Borrowing management endpoints
-├── requirements.txt                     # Python dependencies
-├── README.md                           # Project documentation
-├── test_api.py                         # API testing script
+22021101_INT3505E_02_demo/
+├── .git/                               # Git repository
+├── .venv/                              # Python virtual environment  
 ├── .gitignore                          # Git ignore rules
-└── Library_API.postman_collection.json # Postman API collection
+├── README.md                           # Main project documentation
+├── requirements.txt                    # Python dependencies (Flask, requests)
+├── library.db                          # SQLite database (auto-generated)
+└── week_03/                            # Week 03 - Library API Demo
+    ├── app.py                          # Main Flask application  
+    ├── database.py                     # Database models & initialization
+    ├── routes/                         # Modular API routes
+    │   ├── __init__.py                 # Routes package initializer
+    │   ├── books.py                    # Books management endpoints
+    │   └── borrows.py                  # Borrowing management endpoints
+    ├── test_api.py                     # Automated API testing script
+    ├── Library_API.postman_collection.json        # Postman collection  
+    └── Simple_Library_API.postman_collection.json # Simple Postman collection
 ```
 
-## Tính năng
+## 🎯 Mô tả Week 03
 
-### Quản lý sách (Books Module)
-- ✅ [F1] Thêm sách mới
-- ✅ [F2] Sửa thông tin sách  
-- ✅ [F3] Xóa sách
-- ✅ [F4] Lấy danh sách tất cả sách
-- ✅ [F5] Lấy thông tin chi tiết của một sách
+**Hệ thống Thư viện API** được xây dựng theo yêu cầu SRS buổi 3, tập trung vào:
+- Thiết kế API RESTful tuân thủ best practices
+- Quản lý sách và việc mượn trả
+- Cấu trúc modular và có thể mở rộng
 
-### Quản lý mượn trả (Borrow Module)  
-- ✅ [F6] Mượn sách (giảm số lượng available)
-- ✅ [F7] Trả sách (tăng số lượng available)
-- ✅ [F8] Lấy danh sách các bản ghi mượn
+## ✅ Tính năng đã hoàn thành
 
-## Kiến trúc
+### 📚 Quản lý sách (Books Module)
+- ✅ **[F1]** Thêm sách mới - `POST /api/v1/books`
+- ✅ **[F2]** Sửa thông tin sách - `PUT /api/v1/books/{id}`
+- ✅ **[F3]** Xóa sách - `DELETE /api/v1/books/{id}`
+- ✅ **[F4]** Lấy danh sách tất cả sách - `GET /api/v1/books`
+- ✅ **[F5]** Lấy thông tin chi tiết một sách - `GET /api/v1/books/{id}`
 
-- **Framework**: Flask với Blueprint để tổ chức modules
-- **Database**: SQLite với schema được định nghĩa trong `database.py`
-- **API Style**: RESTful tuân thủ best practices
-- **Data Format**: JSON responses với format chuẩn
+### 📖 Quản lý mượn trả (Borrow Module)  
+- ✅ **[F6]** Mượn sách (giảm available_copies) - `POST /api/v1/borrows`
+- ✅ **[F7]** Trả sách (tăng available_copies) - `PUT /api/v1/borrows/{id}/return`
+- ✅ **[F8]** Lấy danh sách bản ghi mượn - `GET /api/v1/borrows`
+
+## 🏗️ Kiến trúc & Công nghệ
+
+- **Framework**: Flask với Blueprint pattern
+- **Database**: SQLite với auto-initialization  
+- **API Design**: RESTful với chuẩn HTTP methods
+- **Structure**: Modular routes trong folder riêng biệt
+- **Testing**: Automated testing script + Postman collections
+- **Environment**: Python virtual environment (.venv)
 
 ## API Endpoints
 
@@ -62,30 +76,53 @@ week_03/
 | PUT | `/api/v1/borrows/{id}/return` | Trả sách |
 | GET | `/api/v1/borrows` | Lấy danh sách bản ghi mượn |
 
-## Cài đặt và Chạy
+## 🚀 Cài đặt và Chạy
 
-### 1. Cài đặt dependencies
+### Bước 1: Clone repository
+```bash
+git clone https://github.com/bangils37/22021101_INT3505E_02_demo.git
+cd 22021101_INT3505E_02_demo
+```
 
+### Bước 2: Tạo virtual environment  
+```bash
+python -m venv .venv
+.venv\Scripts\activate  # Windows
+# source .venv/bin/activate  # Linux/Mac
+```
+
+### Bước 3: Cài đặt dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Chạy ứng dụng
-
+### Bước 4: Chạy ứng dụng
 ```bash
+cd week_03
 python app.py
 ```
 
-Ứng dụng sẽ chạy tại: `http://localhost:5000`
+**🌐 Server sẽ chạy tại**: `http://localhost:5000`
 
-### 3. Database
+### Bước 5: Test API
 
-Database SQLite sẽ được tự động tạo với tên `library.db` khi chạy ứng dụng lần đầu.
+#### Option 1: Automated Test Script
+```bash
+python test_api.py
+```
 
-## Ví dụ sử dụng API
+#### Option 2: Import Postman Collection
+- Mở Postman → Import → Chọn file `Library_API.postman_collection.json`
+- Hoặc sử dụng `Simple_Library_API.postman_collection.json` cho version đơn giản hơn
+
+### Bước 6: Xem Database
+Database `library.db` sẽ được tự động tạo với dữ liệu mẫu gồm:
+- **4 cuốn sách** (Clean Code, Design Patterns, Effective Python, Flask Web Development)  
+- **3 bản ghi mượn** từ 2 users khác nhau
+
+## 📋 Ví dụ sử dụng API
 
 ### 1. Thêm sách mới
-
 ```bash
 curl -X POST http://localhost:5000/api/v1/books \
   -H "Content-Type: application/json" \
@@ -97,13 +134,16 @@ curl -X POST http://localhost:5000/api/v1/books \
 ```
 
 ### 2. Lấy danh sách sách
-
 ```bash
 curl -X GET http://localhost:5000/api/v1/books
 ```
 
-### 3. Mượn sách
+### 3. Lấy thông tin sách theo ID
+```bash
+curl -X GET http://localhost:5000/api/v1/books/1
+```
 
+### 4. Mượn sách
 ```bash
 curl -X POST http://localhost:5000/api/v1/borrows \
   -H "Content-Type: application/json" \
@@ -113,31 +153,24 @@ curl -X POST http://localhost:5000/api/v1/borrows \
   }'
 ```
 
-### 4. Trả sách
-
+### 5. Trả sách
 ```bash
 curl -X PUT http://localhost:5000/api/v1/borrows/1/return
 ```
 
-### 5. Lấy danh sách mượn
-
+### 6. Lấy danh sách mượn (có filter)
 ```bash
+# Tất cả bản ghi
 curl -X GET http://localhost:5000/api/v1/borrows
+
+# Theo user_id
+curl -X GET "http://localhost:5000/api/v1/borrows?user_id=1"
+
+# Theo status  
+curl -X GET "http://localhost:5000/api/v1/borrows?status=borrowed"
 ```
 
-## Response Format
-
-Tất cả API response đều tuân theo format chuẩn:
-
-```json
-{
-  "success": true/false,
-  "data": {...},
-  "message": "Description message"
-}
-```
-
-## Database Schema
+## 📊 Database Schema & Sample Data
 
 ### Books Table
 ```sql
@@ -151,7 +184,13 @@ CREATE TABLE books (
 );
 ```
 
-### Borrows Table
+**Sample Data:**
+- Clean Code by Robert C. Martin (Available: 3/5)
+- Design Patterns by Gang of Four (Available: 2/3)  
+- Effective Python by Brett Slatkin (Available: 4/4)
+- Flask Web Development by Miguel Grinberg (Available: 1/2)
+
+### Borrows Table  
 ```sql
 CREATE TABLE borrows (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -164,19 +203,71 @@ CREATE TABLE borrows (
 );
 ```
 
-## Best Practices được áp dụng
+**Sample Data:**
+- User 1 borrowed Book 1 (Clean Code) - Status: borrowed
+- User 2 borrowed Book 2 (Design Patterns) - Status: borrowed  
+- User 1 borrowed Book 4 (Flask Web Development) - Status: borrowed
 
-1. **RESTful Design**: Sử dụng HTTP methods chuẩn và danh từ số nhiều cho endpoints
-2. **API Versioning**: Sử dụng `/api/v1/` prefix
-3. **Error Handling**: Response codes và messages rõ ràng
-4. **Data Validation**: Kiểm tra input data
-5. **Database Integrity**: Foreign key constraints và transaction handling
-6. **Consistent Response Format**: JSON format thống nhất cho tất cả responses
+## 🎯 Best Practices đã áp dụng
 
-## Tác giả
+1. **🔗 RESTful API Design**
+   - HTTP methods chuẩn (GET, POST, PUT, DELETE)
+   - Endpoint naming với danh từ số nhiều
+   - Status codes phù hợp (200, 201, 404, 400)
 
-Demo được tạo cho môn INT3505E - Software Engineering
+2. **📦 API Versioning**  
+   - Sử dụng `/api/v1/` prefix cho tương lai mở rộng
 
-## License
+3. **🏗️ Modular Architecture**
+   - Tách routes thành modules riêng biệt
+   - Blueprint pattern để tổ chức code
 
-This project is for educational purposes only.
+4. **🛡️ Error Handling**
+   - Try-catch comprehensive 
+   - Consistent error response format
+   - Input validation
+
+5. **💾 Database Best Practices**
+   - Foreign key constraints
+   - Auto-increment primary keys  
+   - Timestamp tracking
+   - Transaction handling
+
+6. **🧪 Testing & Documentation**
+   - Automated test script
+   - Postman collections  
+   - Clear API documentation
+   - Sample data included
+
+## 📈 Khả năng mở rộng
+
+Hệ thống được thiết kế để dễ dàng mở rộng:
+- ➕ Thêm User management module
+- ➕ Authentication & Authorization
+- ➕ Advanced search & filtering  
+- ➕ Email notifications
+- ➕ Book categories & tags
+- ➕ Reservation system
+
+## 🏆 Đánh giá SRS Requirements
+
+| Requirement | Status | Implementation |
+|-------------|--------|----------------|
+| **[N1]** Push lên private git repo | ✅ | Repository: `22021101_INT3505E_02_demo` |
+| **[N2]** Best practices đặt tên endpoint | ✅ | RESTful naming conventions |  
+| **[N3]** Dễ mở rộng | ✅ | Modular structure, Blueprint pattern |
+| **[N4]** Response JSON rõ ràng | ✅ | Consistent format cho tất cả endpoints |
+| **[F1-F8]** Đầy đủ 8 chức năng | ✅ | Tất cả endpoints hoạt động |
+
+---
+
+## 👨‍💻 Thông tin
+
+- **Sinh viên**: [Your Name]
+- **Mã số**: 22021101  
+- **Lớp**: INT3505E_02
+- **Buổi**: Week 03 - Thiết kế API
+- **Framework**: Flask Python
+- **Database**: SQLite
+
+**🎯 Demo hoàn thành theo đúng yêu cầu SRS!**
