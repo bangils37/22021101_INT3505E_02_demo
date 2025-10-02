@@ -28,7 +28,7 @@
 
 ## 🎯 Mô tả Week 03
 
-**Hệ thống Thư viện API** được xây dựng theo yêu cầu SRS buổi 3, tập trung vào:
+**Hệ thống Thư viện API** được xây dựng tập trung vào:
 - Thiết kế API RESTful tuân thủ best practices
 - Quản lý sách và việc mượn trả
 - Cấu trúc modular và có thể mở rộng
@@ -249,25 +249,13 @@ Hệ thống được thiết kế để dễ dàng mở rộng:
 - ➕ Book categories & tags
 - ➕ Reservation system
 
-## 🏆 Đánh giá SRS Requirements
-
-| Requirement | Status | Implementation |
-|-------------|--------|----------------|
-| **[N1]** Push lên private git repo | ✅ | Repository: `22021101_INT3505E_02_demo` |
-| **[N2]** Best practices đặt tên endpoint | ✅ | RESTful naming conventions |  
-| **[N3]** Dễ mở rộng | ✅ | Modular structure, Blueprint pattern |
-| **[N4]** Response JSON rõ ràng | ✅ | Consistent format cho tất cả endpoints |
-| **[F1-F8]** Đầy đủ 8 chức năng | ✅ | Tất cả endpoints hoạt động |
-
 ---
 
 ## 👨‍💻 Thông tin
 
-- **Sinh viên**: [Your Name]
+- **Sinh viên**: Nguyễn Bằng Anh
 - **Mã số**: 22021101  
 - **Lớp**: INT3505E_02
 - **Buổi**: Week 03 - Thiết kế API
 - **Framework**: Flask Python
 - **Database**: SQLite
-
-**🎯 Demo hoàn thành theo đúng yêu cầu SRS!**
