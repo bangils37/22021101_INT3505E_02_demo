@@ -5,10 +5,78 @@ books_bp = Blueprint('books', __name__)
 
 @books_bp.route('/api/v1/books', methods=['GET'])
 def get_books():
-    """[F4] Lấy danh sách tất cả sách"""
+    """[F4] Lấy danh sách sách với pagination, filtering và sorting"""
     try:
+        # Get query parameters
+        page = request.args.get('page', 1, type=int)
+        limit = request.args.get('limit', 10, type=int)
+        offset = request.args.get('offset', type=int)
+        
+        # Filtering parameters
+        author = request.args.get('author')
+        title = request.args.get('title')
+        status = request.args.get('status')  # available, unavailable
+        
+        # Sorting parameters
+        sort = request.args.get('sort', 'id')  # Default sort by id
+        order = request.args.get('order', 'asc')  # asc or desc
+        
+        # Validate parameters
+        if limit > 100:
+            limit = 100  # Max limit
+        if limit < 1:
+            limit = 10
+        if page < 1:
+            page = 1
+        if order not in ['asc', 'desc']:
+            order = 'asc'
+        if sort not in ['id', 'title', 'author', 'available_copies', 'total_copies', 'created_at']:
+            sort = 'id'
+        
+        # Calculate offset if not provided
+        if offset is None:
+            offset = (page - 1) * limit
+        
         conn = get_db_connection()
-        books = conn.execute('SELECT * FROM books ORDER BY id').fetchall()
+        
+        # Build WHERE clause for filtering
+        where_conditions = []
+        params = []
+        
+        if author:
+            where_conditions.append("author LIKE ?")
+            params.append(f"%{author}%")
+        
+        if title:
+            where_conditions.append("title LIKE ?")
+            params.append(f"%{title}%")
+            
+        if status:
+            if status == 'available':
+                where_conditions.append("available_copies > 0")
+            elif status == 'unavailable':
+                where_conditions.append("available_copies = 0")
+        
+        where_clause = ""
+        if where_conditions:
+            where_clause = "WHERE " + " AND ".join(where_conditions)
+        
+        # Build ORDER BY clause
+        order_clause = f"ORDER BY {sort} {order.upper()}"
+        
+        # Get total count for pagination
+        count_query = f"SELECT COUNT(*) as total FROM books {where_clause}"
+        total_books = conn.execute(count_query, params).fetchone()['total']
+        
+        # Get books with pagination
+        books_query = f"""
+            SELECT * FROM books 
+            {where_clause} 
+            {order_clause} 
+            LIMIT ? OFFSET ?
+        """
+        params.extend([limit, offset])
+        books = conn.execute(books_query, params).fetchall()
         conn.close()
         
         books_list = []
@@ -22,10 +90,33 @@ def get_books():
                 'created_at': book['created_at']
             })
         
+        # Calculate pagination info
+        total_pages = (total_books + limit - 1) // limit  # Ceiling division
+        has_next = page < total_pages
+        has_prev = page > 1
+        
         return jsonify({
             'success': True,
             'data': books_list,
-            'message': 'Books retrieved successfully'
+            'pagination': {
+                'page': page,
+                'limit': limit,
+                'offset': offset,
+                'total_items': total_books,
+                'total_pages': total_pages,
+                'has_next': has_next,
+                'has_prev': has_prev
+            },
+            'filters': {
+                'author': author,
+                'title': title,
+                'status': status
+            },
+            'sorting': {
+                'sort': sort,
+                'order': order
+            },
+            'message': f'Found {len(books_list)} books (page {page} of {total_pages})'
         }), 200
         
     except Exception as e:
