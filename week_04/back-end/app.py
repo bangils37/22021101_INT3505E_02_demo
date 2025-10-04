@@ -1,14 +1,15 @@
 from flask import Flask, jsonify
-from database import init_db
-from routes.books import books_bp
-from routes.borrows import borrows_bp
+from .database import init_db, get_db_connection
+from .routes.v1.book_routes import book_bp
+from .routes.v1.borrow_routes import borrow_bp
 
 # Create Flask application
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 
 # Register blueprints
-app.register_blueprint(books_bp)
-app.register_blueprint(borrows_bp)
+app.register_blueprint(book_bp, url_prefix='/api/v1')
+app.register_blueprint(borrow_bp, url_prefix='/api/v1')
 
 # Error handlers
 @app.errorhandler(404)
