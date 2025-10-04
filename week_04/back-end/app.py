@@ -4,6 +4,8 @@ from .routes.v1.book_routes import book_bp
 from .routes.v1.borrow_routes import borrow_bp
 from .routes.v2.book_routes import book_bp_v2
 from .routes.v2.borrow_routes import borrow_bp_v2
+from .routes.v3.book_routes import book_bp_v3
+from .routes.v3.borrow_routes import borrow_bp_v3
 
 # Create Flask application
 app = Flask(__name__)
@@ -14,6 +16,8 @@ app.register_blueprint(book_bp, url_prefix='/api/v1')
 app.register_blueprint(borrow_bp, url_prefix='/api/v1')
 app.register_blueprint(book_bp_v2, url_prefix='/api/v2')
 app.register_blueprint(borrow_bp_v2, url_prefix='/api/v2')
+app.register_blueprint(book_bp_v3, url_prefix='/api/v3')
+app.register_blueprint(borrow_bp_v3, url_prefix='/api/v3')
 
 # Error handlers
 @app.errorhandler(404)
