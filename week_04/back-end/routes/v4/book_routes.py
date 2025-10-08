@@ -21,54 +21,54 @@ def get_books():
     response.headers['ETag'] = etag
     return response
 
-# # Get a single book by ID
-# @book_bp_v4.route('/books/<int:book_id>', methods=['GET'])
-# def get_book(book_id):
-#     conn = get_db_connection()
-#     book = conn.execute('SELECT * FROM books WHERE id = ?', (book_id,)).fetchone()
-#     conn.close()
-#     if book:
-#         return jsonify(dict(book))
-#     return jsonify({'message': 'Book not found'}), 404
+# Get a single book by ID
+@book_bp_v4.route('/books/<int:book_id>', methods=['GET'])
+def get_book(book_id):
+    conn = get_db_connection()
+    book = conn.execute('SELECT * FROM books WHERE id = ?', (book_id,)).fetchone()
+    conn.close()
+    if book:
+        return jsonify(dict(book))
+    return jsonify({'message': 'Book not found'}), 404
 
-# # Create a new book
-# @book_bp_v4.route('/books', methods=['POST'])
-# def create_book():
-#     new_book = request.get_json()
-#     title = new_book['title']
-#     author = new_book['author']
-#     year = new_book['year']
-#     conn = get_db_connection()
-#     cursor = conn.cursor()
-#     cursor.execute('INSERT INTO books (title, author, year) VALUES (?, ?, ?)', (title, author, year))
-#     conn.commit()
-#     conn.close()
-#     return jsonify({'message': 'Book created successfully', 'id': cursor.lastrowid}), 201
+# Create a new book
+@book_bp_v4.route('/books', methods=['POST'])
+def create_book():
+    new_book = request.get_json()
+    title = new_book['title']
+    author = new_book['author']
+    year = new_book['year']
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO books (title, author, year) VALUES (?, ?, ?)', (title, author, year))
+    conn.commit()
+    conn.close()
+    return jsonify({'message': 'Book created successfully', 'id': cursor.lastrowid}), 201
 
-# # Update an existing book
-# @book_bp_v4.route('/books/<int:book_id>', methods=['PUT'])
-# def update_book(book_id):
-#     updated_book = request.get_json()
-#     title = updated_book['title']
-#     author = updated_book['author']
-#     year = updated_book['year']
-#     conn = get_db_connection()
-#     cursor = conn.cursor()
-#     cursor.execute('UPDATE books SET title = ?, author = ?, year = ? WHERE id = ?', (title, author, year, book_id))
-#     conn.commit()
-#     conn.close()
-#     if cursor.rowcount == 0:
-#         return jsonify({'message': 'Book not found'}), 404
-#     return jsonify({'message': 'Book updated successfully'}), 200
+# Update an existing book
+@book_bp_v4.route('/books/<int:book_id>', methods=['PUT'])
+def update_book(book_id):
+    updated_book = request.get_json()
+    title = updated_book['title']
+    author = updated_book['author']
+    year = updated_book['year']
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('UPDATE books SET title = ?, author = ?, year = ? WHERE id = ?', (title, author, year, book_id))
+    conn.commit()
+    conn.close()
+    if cursor.rowcount == 0:
+        return jsonify({'message': 'Book not found'}), 404
+    return jsonify({'message': 'Book updated successfully'}), 200
 
-# # Delete a book
-# @book_bp_v4.route('/books/<int:book_id>', methods=['DELETE'])
-# def delete_book(book_id):
-#     conn = get_db_connection()
-#     cursor = conn.cursor()
-#     cursor.execute('DELETE FROM books WHERE id = ?', (book_id,))
-#     conn.commit()
-#     conn.close()
-#     if cursor.rowcount == 0:
-#         return jsonify({'message': 'Book not found'}), 404
-#     return jsonify({'message': 'Book deleted successfully'}), 200
+# Delete a book
+@book_bp_v4.route('/books/<int:book_id>', methods=['DELETE'])
+def delete_book(book_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM books WHERE id = ?', (book_id,))
+    conn.commit()
+    conn.close()
+    if cursor.rowcount == 0:
+        return jsonify({'message': 'Book not found'}), 404
+    return jsonify({'message': 'Book deleted successfully'}), 200
