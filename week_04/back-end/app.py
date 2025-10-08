@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask_swagger_ui import get_swaggerui_blueprint
 from .database import init_db, get_db_connection
 from .routes.v4.book_routes import book_bp_v4
 from .routes.v4.borrow_routes import borrow_bp_v4
@@ -10,6 +11,23 @@ app.secret_key = 'your_secret_key'
 # Register blueprints
 app.register_blueprint(book_bp_v4, url_prefix='/api/v4')
 app.register_blueprint(borrow_bp_v4, url_prefix='/api/v4')
+
+# Swagger UI Blueprint
+SWAGGER_URL = '/api/docs'
+API_URL = '/static/openapi_v4.yaml'
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Library API v4 Documentation"
+    }
+)
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+
+# Serve OpenAPI YAML file
+@app.route('/static/openapi_v4.yaml')
+def serve_openapi_yaml():
+    return app.send_static_file('openapi_v4.yaml')
 
 # Error handlers
 @app.errorhandler(404)
