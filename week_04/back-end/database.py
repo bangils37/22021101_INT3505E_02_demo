@@ -1,9 +1,11 @@
 import sqlite3
+import os
 
 # Database configuration
-DATABASE = 'library.db'
+DATABASE = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'library.db')
 
 def init_db():
+    print(f"Initializing database at: {DATABASE}")
     """Initialize the database with required tables"""
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
@@ -54,6 +56,7 @@ def get_db_connection():
     return conn
 
 def add_sample_data():
+    print(f"Adding sample data to database at: {DATABASE}")
     """Add sample data to the database"""
     conn = get_db_connection()
     cursor = conn.cursor()

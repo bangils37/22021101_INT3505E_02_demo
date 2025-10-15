@@ -1,16 +1,22 @@
 from flask import Flask, jsonify
 from flask_swagger_ui import get_swaggerui_blueprint
-from .database import init_db, get_db_connection
+from .database import init_db, get_db_connection, add_sample_data
 from .routes.v1.book_routes import book_bp_v1
 from .routes.v1.borrow_routes import borrow_bp_v1
+from .routes.v1.user_routes import user_bp_v1
 
 # Create Flask application
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
+# Initialize database
+init_db()
+add_sample_data()
+
 # Register blueprints
 app.register_blueprint(book_bp_v1, url_prefix='/api/v1')
 app.register_blueprint(borrow_bp_v1, url_prefix='/api/v1')
+app.register_blueprint(user_bp_v1, url_prefix='/api/v1')
 
 # Swagger UI Blueprint
 SWAGGER_URL = '/api/docs'
@@ -60,13 +66,11 @@ def home():
         'version': 'v1',
         'endpoints': {
             'books': '/api/v1/books',
-            'borrows': '/api/v1/borrows'
+            'borrows': '/api/v1/borrows',
+            'users_borrows': '/api/v1/users/{id}/borrows'
         }
     })
 
 if __name__ == '__main__':
-    # Initialize database
-    init_db()
-    
     # Run the application
     app.run(debug=True, host='0.0.0.0', port=5000)
