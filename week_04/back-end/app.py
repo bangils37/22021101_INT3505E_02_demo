@@ -1,33 +1,33 @@
 from flask import Flask, jsonify
 from flask_swagger_ui import get_swaggerui_blueprint
 from .database import init_db, get_db_connection
-from .routes.v4.book_routes import book_bp_v4
-from .routes.v4.borrow_routes import borrow_bp_v4
+from .routes.v1.book_routes import book_bp_v1
+from .routes.v1.borrow_routes import borrow_bp_v1
 
 # Create Flask application
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 # Register blueprints
-app.register_blueprint(book_bp_v4, url_prefix='/api/v4')
-app.register_blueprint(borrow_bp_v4, url_prefix='/api/v4')
+app.register_blueprint(book_bp_v1, url_prefix='/api/v1')
+app.register_blueprint(borrow_bp_v1, url_prefix='/api/v1')
 
 # Swagger UI Blueprint
 SWAGGER_URL = '/api/docs'
-API_URL = '/static/openapi_v4.yaml'
+API_URL = '/static/openapi_v1.yaml'
 swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
     API_URL,
     config={
-        'app_name': "Library API v4 Documentation"
+        'app_name': "Library API v1 Documentation"
     }
 )
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 # Serve OpenAPI YAML file
-@app.route('/static/openapi_v4.yaml')
+@app.route('/static/openapi_v1.yaml')
 def serve_openapi_yaml():
-    return app.send_static_file('openapi_v4.yaml')
+    return app.send_static_file('openapi_v1.yaml')
 
 # Error handlers
 @app.errorhandler(404)
@@ -57,10 +57,10 @@ def home():
     return jsonify({
         'success': True,
         'message': 'Library Management API',
-        'version': 'v4',
+        'version': 'v1',
         'endpoints': {
-            'books': '/api/v4/books',
-            'borrows': '/api/v4/borrows'
+            'books': '/api/v1/books',
+            'borrows': '/api/v1/borrows'
         }
     })
 
