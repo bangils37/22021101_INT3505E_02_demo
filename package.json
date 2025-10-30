@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "swagger-nodegen-cli": "^3.0.34"
+  }
+}
