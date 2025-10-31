@@ -9,6 +9,8 @@
 - **Nhánh `main`**: Nhánh chính, chứa thông tin tổng quan về repository
 - **Nhánh `assignments/week_xx`**: Chứa các bài tập và code demo cho từng tuần học
 
+**Note**: Từ week 07 trở đi, code sẽ nằm trong thư mục `weekxx` của nhánh main
+
 ## Danh sách các tuần học
 
 Để xem code và bài tập của từng tuần, vui lòng chuyển sang các nhánh tương ứng:
