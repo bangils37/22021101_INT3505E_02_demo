@@ -1,0 +1,133 @@
+openapi: 3.0.0
+info:
+  title: Product API
+  version: 1.0.0
+servers:
+- url: http://localhost:3000
+paths:
+  /products:
+    get:
+      summary: Get all products
+      operationId: productsGET
+      responses:
+        "200":
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+                x-content-type: application/json
+      x-swagger-router-controller: Default
+    post:
+      summary: Create a new product
+      operationId: productsPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+        required: true
+      responses:
+        "201":
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+      x-swagger-router-controller: Default
+  /products/{id}:
+    get:
+      summary: Get product by ID
+      operationId: productsIdGET
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: A single product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+      x-swagger-router-controller: Default
+    put:
+      summary: Update product by ID
+      operationId: productsIdPUT
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+        required: true
+      responses:
+        "200":
+          description: Updated product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+      x-swagger-router-controller: Default
+    delete:
+      summary: Delete product by ID
+      operationId: productsIdDELETE
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Product deleted
+      x-swagger-router-controller: Default
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 66f8b9a2cdb1
+        name:
+          type: string
+          example: iPhone 16 Pro
+        price:
+          type: number
+          example: 29990000
+        description:
+          type: string
+          example: New Apple flagship smartphone
+      example:
+        price: 29990000
+        name: iPhone 16 Pro
+        description: New Apple flagship smartphone
+        id: 66f8b9a2cdb1
+    ProductInput:
+      required:
+      - name
+      - price
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+        description:
+          type: string
