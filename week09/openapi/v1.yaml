@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  title: Payment API v1
+  version: 1.0.0
+servers:
+  - url: https://api.example.com
+paths:
+  /api/v1/payments:
+    post:
+      summary: Create a payment (v1)
+      description: Amount in integer cents; no idempotency header required.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCreateV1'
+      responses:
+        '201':
+          description: Payment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentV1'
+        '400':
+          description: Bad request
+  /api/v1/payments/{id}:
+    get:
+      summary: Get payment by ID (v1)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentV1'
+        '404':
+          description: Not found
+  /api/v1/payments/{id}/refund:
+    post:
+      summary: Refund a payment (v1)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Refunded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundV1'
+components:
+  schemas:
+    PaymentCreateV1:
+      type: object
+      required: [amount, currency, payment_method]
+      properties:
+        amount:
+          type: integer
+          example: 129900
+          description: Amount in minor units (cents)
+        currency:
+          type: string
+          example: USD
+        payment_method:
+          type: string
+          example: card_tok_abc123
+    PaymentV1:
+      type: object
+      properties:
+        id:
+          type: string
+          example: pay_12345
+        amount:
+          type: integer
+          example: 129900
+        currency:
+          type: string
+          example: USD
+        status:
+          type: string
+          enum: [authorized, captured, refunded, failed]
+        createdAt:
+          type: string
+          format: date-time
+    RefundV1:
+      type: object
+      properties:
+        id:
+          type: string
+          example: refund_123
+        paymentId:
+          type: string
+          example: pay_12345
+        amount:
+          type: integer
+          example: 129900
+        status:
+          type: string
+          enum: [succeeded, failed]

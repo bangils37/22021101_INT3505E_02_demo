@@ -1,0 +1,120 @@
+openapi: 3.0.0
+info:
+  title: Payment API v2
+  version: 2.0.0
+servers:
+  - url: https://api.example.com
+paths:
+  /api/v2/payments:
+    post:
+      summary: Create a payment (v2)
+      description: Requires Idempotency-Key header and new amount structure.
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCreateV2'
+      responses:
+        '201':
+          description: Payment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentV2'
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /api/v2/payments/{id}:
+    get:
+      summary: Get payment by ID (v2)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentV2'
+        '404':
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+components:
+  schemas:
+    PaymentCreateV2:
+      type: object
+      required: [amount, paymentMethod]
+      properties:
+        amount:
+          type: object
+          required: [value, currency]
+          properties:
+            value:
+              type: number
+              example: 1299.00
+            currency:
+              type: string
+              example: USD
+        paymentMethod:
+          type: string
+          example: card_tok_abc123
+    PaymentV2:
+      type: object
+      properties:
+        id:
+          type: string
+          example: pay_67890
+        amount:
+          type: object
+          properties:
+            value:
+              type: number
+              example: 1299.00
+            currency:
+              type: string
+              example: USD
+        status:
+          type: string
+          enum: [authorized, captured, refunded, failed]
+        createdAt:
+          type: string
+          format: date-time
+        traceId:
+          type: string
+          example: 3b7c9f2e-93a2-4d6a-9c1b-abc123
+    Problem:
+      type: object
+      required: [type, title, status]
+      properties:
+        type:
+          type: string
+          example: https://example.com/problems/validation-error
+        title:
+          type: string
+          example: Validation error
+        status:
+          type: integer
+          example: 400
+        detail:
+          type: string
+          example: amount.value must be greater than 0
+        traceId:
+          type: string
+          example: 3b7c9f2e-93a2-4d6a-9c1b-abc123
