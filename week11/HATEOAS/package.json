@@ -1,0 +1,21 @@
+{
+  "name": "hateoas-demo",
+  "version": "1.0.0",
+  "description": "A simple HATEOAS demo using Node.js and Express.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "HATEOAS",
+    "REST",
+    "API",
+    "demo"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-hateoas-links": "^1.0.0"
+  }
+}
